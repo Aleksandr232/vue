@@ -2,24 +2,39 @@
     <form @submit.prevent>
             <h4>создание поста</h4>
             <input 
-            v-bind:value="title" 
-            @input="title=$event.target.value"
+            v-model="post.title"
             class="input" 
             type="text"
              placeholder="название поста">
             <input
-             v-bind:value="body"
-             @input="body=$event.target.value"
+            v-model="post.body"
              class="input"
               type="text"
               placeholder="описание поста">
-             <button  class="btn">Создать</button>
+             <button @click="createPost" class="btn">Создать</button>
         </form>
 </template>
 <script>
 
 export default {
-  
+  data(){
+      return{
+          post:{
+              title: '',
+              body:''
+          }
+      }
+  },
+  methods:{
+      createPost(){
+            this.post.id = Date.now();
+            this.$emit('create', this.post)
+            this.post={
+                title: '',
+                body:''
+            }
+        }
+  }
 }
 </script>
 <style scoped>
