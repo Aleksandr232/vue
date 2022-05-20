@@ -11,9 +11,10 @@
        <PostList 
        :posts="posts"
        @remove="removePost"
+       v-if="!isPostsLoading"
        />
         
-         
+         <div v-else>Идет загрузка...</div>
     </div>
     
     
@@ -24,6 +25,7 @@
 import PostFrom from "./components/PostFrom.vue";
 import PostList from "./components/PostList.vue";
 import MyDialog from "./components/UI/MyDialog.vue";
+import axios from 'axios'
 
 
 
@@ -36,25 +38,9 @@ export default{
 },
     data(){
         return{
-            posts:[
-                {
-                    id:1,
-                    title:'Javascript',
-                    body: 'Описание поста'
-                },
-                 {
-                    id:2,
-                    title:'Javascript 2',
-                    body: 'Описание поста 2'
-                },
-                 {
-                    id:3,
-                    title:'Javascript 3',
-                    body: 'Описание поста 3'
-                }
-                
-            ],
-            dialogVisable:false
+            posts:[],
+            dialogVisable:false,
+            isPostsLoading: false
             
            
             
@@ -71,8 +57,26 @@ export default{
          },
          showDialog(){
              this.dialogVisable=true
+         },
+         async  fetchPosts(){
+             try{
+                 this.isPostsLoading=true;
+                 setTimeout(async()=>{
+                 const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+                 this.posts=response.data;
+                 this.isPostsLoading=false;
+             }, 1000)
+             }catch(e){
+                 alert('ошибка')
+             }finally{
+                 this.isPostsLoading=false
+             }
+         
          }
     
+    },
+    mounted(){
+        this.fetchPosts();
     }
 }
 </script>
@@ -99,7 +103,8 @@ export default{
     padding: 10px 15px;
     background: none;
     color: teal;
-    border: 1px solid teal
+    border: 1px solid teal;
+    margin-top: 15px
 }
 
 
