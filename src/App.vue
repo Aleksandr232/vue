@@ -1,10 +1,16 @@
 <template>
     <div class="app">
-        <PostFrom
-        @create="createPost"
+        <h1>Страница с постами </h1>
+        <button class="btn" @click="showDialog">Создать пост</button>
+        <MyDialog v-model:show="dialogVisable">
+            <PostFrom
+            @create="createPost"
         />
+        </MyDialog>
+        
        <PostList 
        :posts="posts"
+       @remove="removePost"
        />
         
          
@@ -17,12 +23,17 @@
 <script>
 import PostFrom from "./components/PostFrom.vue";
 import PostList from "./components/PostList.vue";
+import MyDialog from "./components/UI/MyDialog.vue";
+
 
 
 export default{
     components:{
-         PostList, PostFrom
-    },
+    PostList,
+    PostFrom,
+    MyDialog,
+    
+},
     data(){
         return{
             posts:[
@@ -40,15 +51,27 @@ export default{
                     id:3,
                     title:'Javascript 3',
                     body: 'Описание поста 3'
-                },
+                }
+                
             ],
+            dialogVisable:false
+            
+           
             
         }
+        
     },
     methods:{
         createPost(post){
-            this.posts.push(post)
+            this.posts.push(post);
+            this.dialogVisable=false;
          },
+         removePost(post){
+             this.posts=this.posts.filter(p=>p.id !== post.id)
+         },
+         showDialog(){
+             this.dialogVisable=true
+         }
     
     }
 }
@@ -68,6 +91,15 @@ export default{
 
 .app{
     padding: 20px;
+}
+
+.btn{
+    align-self: flex-end;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: none;
+    color: teal;
+    border: 1px solid teal
 }
 
 
