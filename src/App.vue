@@ -1,7 +1,13 @@
 <template>
     <div class="app">
         <h1>Страница с постами </h1>
-        <button class="btn" @click="showDialog">Создать пост</button>
+        <div class="app_btns">
+            <button class="btn" @click="showDialog">Создать пост</button>
+            <MySelect
+               v-model="selectedSort" 
+               :options="sortOptions"
+            />
+        </div>
         <MyDialog v-model:show="dialogVisable">
             <PostFrom
             @create="createPost"
@@ -9,7 +15,7 @@
         </MyDialog>
         
        <PostList 
-       :posts="posts"
+       :posts="sortedPosts"
        @remove="removePost"
        v-if="!isPostsLoading"
        />
@@ -25,7 +31,9 @@
 import PostFrom from "./components/PostFrom.vue";
 import PostList from "./components/PostList.vue";
 import MyDialog from "./components/UI/MyDialog.vue";
+import MySelect from "./components/UI/MySelect.vue";
 import axios from 'axios'
+
 
 
 
@@ -34,13 +42,18 @@ export default{
     PostList,
     PostFrom,
     MyDialog,
-    
+    MySelect
 },
     data(){
         return{
             posts:[],
             dialogVisable:false,
-            isPostsLoading: false
+            isPostsLoading: false,
+            selectedSort:"",
+            sortOptions:[
+                {value:'title', name:'По названию'},
+                {value:'body', name:'По содержимому'},
+            ]
             
            
             
@@ -77,6 +90,15 @@ export default{
     },
     mounted(){
         this.fetchPosts();
+    },
+    computed:{
+        sortedPosts(){
+            return[...this.posts].sort((post1, post2)=>post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+            
+        }
+    },
+    watch:{
+
     }
 }
 </script>
@@ -90,6 +112,12 @@ export default{
 }
 
 
+.app_btns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px
+}
+
 
 
 
@@ -99,12 +127,11 @@ export default{
 
 .btn{
     align-self: flex-end;
-    margin-top: 15px;
     padding: 10px 15px;
     background: none;
     color: teal;
     border: 1px solid teal;
-    margin-top: 15px
+    
 }
 
 
