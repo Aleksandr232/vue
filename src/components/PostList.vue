@@ -33,12 +33,15 @@ export default {
 }
 .post-list-enter-active,
 .post-list-leave-active {
-  transition: all 1s ease;
+  transition: all 0.4s ease;
 }
 .post-list-enter-from,
 .post-list-leave-to {
   opacity: 0;
   transform: translateX(130px);
+}
+.post-list-move {
+  transition: transform 0.4s ease;
 }
 </style>
 

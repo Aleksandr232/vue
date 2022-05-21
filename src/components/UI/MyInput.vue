@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input :value="value" @input="updateInput" type="text" class="input">
+        <input placeholder="Поиск..." :value="value" @input="updateInput" type="text" class="input">
     </div>
 </template>
 <script>
