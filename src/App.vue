@@ -1,23 +1,27 @@
-<template >
-    <div class="app">
-        <router-view></router-view>
-    </div>
+<template>
+  <navbar></navbar>
+  <div class="app">
+    <router-view></router-view>
+  </div>
 </template>
-<script>
 
+<script>
+import Navbar from "@/components/Navbar";
 
 export default {
-   /*  components:  */
+  components: {
+    Navbar
+  }
 }
 </script>
-<style scoped>
-    *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    }
 
-    .app{
-    padding: 20px;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.app {
+  padding: 20px;
+}
 </style>
